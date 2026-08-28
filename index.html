@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="CreatorOS — منصة صناعة المحتوى الذكية بالذكاء الاصطناعي" />
+  <meta name="theme-color" content="#0f0f13" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>CreatorOS — استوديو المحتوى الذكي</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="modules.css" />
+  <link rel="stylesheet" href="animations.css" />
+</head>
+<body>
+  <!-- Splash / Loading -->
+  <div id="splash" class="splash">
+    <div class="splash-logo">
+      <div class="logo-orbit"></div>
+      <i class="fa-solid fa-clapperboard"></i>
+    </div>
+    <h1>CreatorOS</h1>
+    <p class="splash-tagline" data-i18n="splash.tagline">منصة صناعة المحتوى الذكية</p>
+    <div class="splash-progress"><div class="splash-bar"></div></div>
+  </div>
+
+  <!-- Onboarding Modal -->
+  <div id="onboarding" class="modal-overlay hidden">
+    <div class="modal onboarding-modal glass">
+      <div class="onboarding-steps">
+        <div class="ob-step active" data-step="1">
+          <div class="ob-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h2 data-i18n="ob.welcome">مرحباً بك في CreatorOS</h2>
+          <p data-i18n="ob.welcomeDesc">استوديو متكامل لصناعة فيديوهات وصور وصوتيات بالذكاء الاصطناعي</p>
+        </div>
+        <div class="ob-step" data-step="2">
+          <div class="ob-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h2 data-i18n="ob.autopilot">وضع الطيار الآلي</h2>
+          <p data-i18n="ob.autopilotDesc">أنشئ محتوى أسبوع كامل بضغطة واحدة — التطبيق يخطط ويكتب ويصمم ويجدول</p>
+        </div>
+        <div class="ob-step" data-step="3">
+          <div class="ob-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h2 data-i18n="ob.growth">حلقة النمو الفيروسي</h2>
+          <p data-i18n="ob.growthDesc">اكسب نقاطاً، ارتقِ بالمستويات، وادعُ أصدقاءك مقابل رصيد مجاني</p>
+        </div>
+      </div>
+      <div class="ob-nav">
+        <button class="btn btn-ghost" id="ob-skip" data-i18n="ob.skip">تخطي</button>
+        <div class="ob-dots"><span class="active"></span><span></span><span></span></div>
+        <button class="btn btn-primary" id="ob-next" data-i18n="ob.next">التالي</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal auth-modal glass">
+      <button class="modal-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login" data-i18n="auth.login">تسجيل الدخول</button>
+        <button class="auth-tab" data-tab="register" data-i18n="auth.register">إنشاء حساب</button>
+      </div>
+      <form id="login-form" class="auth-form">
+        <div class="form-group">
+          <label data-i18n="auth.email">البريد الإلكتروني</label>
+          <input type="email" id="login-email" required placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth.password">كلمة المرور</label>
+          <input type="password" id="login-password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.loginBtn">دخول</button>
+      </form>
+      <form id="register-form" class="auth-form hidden">
+        <div class="form-group">
+          <label data-i18n="auth.name">الاسم</label>
+          <input type="text" id="reg-name" required placeholder="اسمك" />
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth.email">البريد الإلكتروني</label>
+          <input type="email" id="reg-email" required placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth.password">كلمة المرور</label>
+          <input type="password" id="reg-password" required placeholder="••••••••" minlength="6" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.registerBtn">إنشاء حساب</button>
+      </form>
+      <p class="auth-hint" data-i18n="auth.demo">للتجربة: أي بريد + أي كلمة مرور (محاكاة محلية)</p>
+    </div>
+  </div>
+
+  <!-- App Shell -->
+  <div id="app" class="app hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span class="brand-text">CreatorOS</span>
+        </div>
+        <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-module="dashboard">
+          <i class="fa-solid fa-house"></i><span data-i18n="nav.dashboard">لوحة اليوم</span>
+        </a>
+        <a href="#video" class="nav-item" data-module="video">
+          <i class="fa-solid fa-video"></i><span data-i18n="nav.video">استوديو الفيديو</span>
+        </a>
+        <a href="#image" class="nav-item" data-module="image">
+          <i class="fa-solid fa-image"></i><span data-i18n="nav.image">استوديو الصور</span>
+        </a>
+        <a href="#audio" class="nav-item" data-module="audio">
+          <i class="fa-solid fa-microphone"></i><span data-i18n="nav.audio">استوديو الصوت</span>
+        </a>
+        <a href="#writing" class="nav-item" data-module="writing">
+          <i class="fa-solid fa-pen-fancy"></i><span data-i18n="nav.writing">استوديو الكتابة</span>
+        </a>
+        <a href="#social" class="nav-item" data-module="social">
+          <i class="fa-solid fa-share-nodes"></i><span data-i18n="nav.social">إدارة السوشيال</span>
+        </a>
+        <a href="#repurpose" class="nav-item" data-module="repurpose">
+          <i class="fa-solid fa-recycle"></i><span data-i18n="nav.repurpose">إعادة التدوير</span>
+        </a>
+        <a href="#brand" class="nav-item" data-module="brand">
+          <i class="fa-solid fa-palette"></i><span data-i18n="nav.brand">العلامة التجارية</span>
+        </a>
+        <a href="#analytics" class="nav-item" data-module="analytics">
+          <i class="fa-solid fa-chart-pie"></i><span data-i18n="nav.analytics">التحليلات</span>
+        </a>
+        <a href="#community" class="nav-item" data-module="community">
+          <i class="fa-solid fa-users"></i><span data-i18n="nav.community">المجتمع</span>
+        </a>
+        <a href="#assets" class="nav-item" data-module="assets">
+          <i class="fa-solid fa-folder-open"></i><span data-i18n="nav.assets">مكتبة الأصول</span>
+        </a>
+        <div class="nav-divider"></div>
+        <a href="#wallet" class="nav-item" data-module="wallet">
+          <i class="fa-solid fa-wallet"></i><span data-i18n="nav.wallet">المحفظة والتسعير</span>
+        </a>
+        <a href="#collab" class="nav-item" data-module="collab">
+          <i class="fa-solid fa-people-group"></i><span data-i18n="nav.collab">التعاون</span>
+        </a>
+        <a href="#support" class="nav-item" data-module="support">
+          <i class="fa-solid fa-headset"></i><span data-i18n="nav.support">الدعم</span>
+        </a>
+        <a href="#admin" class="nav-item admin-only hidden" data-module="admin">
+          <i class="fa-solid fa-crown"></i><span data-i18n="nav.admin">لوحة المالك</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-chip" id="user-chip">
+          <div class="avatar" id="user-avatar">U</div>
+          <div class="user-info">
+            <span class="user-name" id="user-name">زائر</span>
+            <span class="user-plan" id="user-plan">Free</span>
+          </div>
+        </div>
+        <button id="theme-toggle" class="icon-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+        <button id="lang-toggle" class="icon-btn" title="Language"><i class="fa-solid fa-globe"></i></button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main" class="main">
+      <header class="topbar">
+        <button id="mobile-menu" class="icon-btn mobile-only"><i class="fa-solid fa-bars"></i></button>
+        <div class="topbar-center">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" id="global-search" data-i18n-placeholder="search.placeholder" placeholder="ابحث في المشاريع..." />
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button id="focus-mode-btn" class="icon-btn" title="Focus Mode"><i class="fa-solid fa-eye"></i></button>
+          <button id="autopilot-btn" class="btn btn-accent btn-sm">
+            <i class="fa-solid fa-robot"></i> <span data-i18n="nav.autopilot">الطيار الآلي</span>
+          </button>
+          <button id="notif-btn" class="icon-btn badge-dot" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+          </button>
+          <button id="auth-btn" class="btn btn-ghost btn-sm" data-i18n="auth.login">دخول</button>
+        </div>
+      </header>
+
+      <!-- Module Container -->
+      <div id="module-container" class="module-container">
+        <!-- Dynamic modules loaded here -->
+      </div>
+    </main>
+
+    <!-- AI Chat Bar -->
+    <div id="ai-chat" class="ai-chat">
+      <div id="chat-messages" class="chat-messages hidden"></div>
+      <div class="chat-input-wrap">
+        <button id="chat-toggle" class="chat-avatar" title="Orion AI">
+          <i class="fa-solid fa-sparkles"></i>
+        </button>
+        <input type="text" id="chat-input" data-i18n-placeholder="chat.placeholder" placeholder="اسأل أوريون أي شيء..." />
+        <button id="chat-send" class="icon-btn"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toasts" class="toasts"></div>
+
+  <!-- Cinema Preview Overlay -->
+  <div id="cinema-overlay" class="cinema-overlay hidden">
+    <div class="cinema-content">
+      <video id="cinema-video" controls></video>
+      <div class="cinema-actions">
+        <button id="cinema-export" class="btn btn-primary"><i class="fa-solid fa-download"></i> <span data-i18n="video.export">تصدير نهائي</span></button>
+        <button id="cinema-close" class="btn btn-ghost"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" class="confetti-canvas hidden"></canvas>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="storage.js"></script>
+  <script src="utils.js"></script>
+  <script src="toast.js"></script>
+  <script src="ai-persona.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="video.js"></script>
+  <script src="image.js"></script>
+  <script src="audio.js"></script>
+  <script src="writing.js"></script>
+  <script src="social.js"></script>
+  <script src="repurpose.js"></script>
+  <script src="brand.js"></script>
+  <script src="analytics.js"></script>
+  <script src="community.js"></script>
+  <script src="assets.js"></script>
+  <script src="wallet.js"></script>
+  <script src="collab.js"></script>
+  <script src="support.js"></script>
+  <script src="admin.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
